@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class ClickDisplayMove : MonoBehaviour
 {
     public int clickCount = 0;          // 0 = 전광판 상단 위치 . 1 = 전광판 하단 위치
@@ -53,7 +53,29 @@ public class ClickDisplayMove : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))        // 레이캐스트로 변경 . 콜라이더는 충돌체를 클릭하지 않을 경우 null 오류가 나타남
             {
-         
+
+                if (clickCount == 0)
+                {
+                    chatTextObject.SetActive(false);
+                    LoveBarFull.SetActive(false);
+
+                    totalText.transform.DOLocalMove(new Vector3(0, 1000, 0), 1f);
+
+                    yield return new WaitForSecondsRealtime(0.5f);
+                    clickCount++;
+                }
+                else
+                {
+                    chatTextObject.SetActive(true);
+                    LoveBarFull.SetActive(true);
+
+                    totalText.transform.DOLocalMove(new Vector3(0, 1744, 0), 1f);
+
+                    yield return new WaitForSecondsRealtime(0.5f);
+                    clickCount = 0;
+                }
+
+                /*
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 touchPos = new Vector2(worldPos.x, worldPos.y);
                 Ray2D ray = new Ray2D(touchPos, Vector2.zero);
@@ -64,7 +86,7 @@ public class ClickDisplayMove : MonoBehaviour
                 //Collider2D clickColl = Physics2D.OverlapPoint(clickPos);        
 
                 //if (clickColl.gameObject.name == "TotalText")
-                if(rayHit.collider != null)
+                if (rayHit.collider != null)
                 {
                     if (rayHit.collider.gameObject.name.Equals("TotalText"))
                     {
@@ -99,6 +121,8 @@ public class ClickDisplayMove : MonoBehaviour
                             clickCount = 0;
                         }
                     }
+                    */
+
                     //else if (rayHit.collider.gameObject.name.Equals("ShopUIOpen"))
                     //{
                     //    if (ShopUICount == 0)
@@ -184,7 +208,7 @@ public class ClickDisplayMove : MonoBehaviour
                     //    }
                     //}
                 }
-            }
+            
             yield return null;
         }
     }
